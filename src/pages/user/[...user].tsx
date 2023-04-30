@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
-import { fetchUser, fetchUserRepos } from "@/services/api";
+import Loading from "@/components/Loading";
+import RepoCard from "@/components/RepoCard";
 import { UserProps } from "@/types/User";
+import { RepoProps } from "@/types/Repos";
+import { fetchUser, fetchUserRepos } from "@/services/api";
 
 import { AiFillGithub } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 
 import * as S from "./styles";
-import RepoCard from "@/components/RepoCard";
-import Loading from "@/components/Loading";
-import { RepoProps } from "@/types/Repos";
 
 const User = () => {
   const [userDetails, setUserDetails] = useState<UserProps>();

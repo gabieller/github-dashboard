@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
-import * as S from "./styles";
-
+import UserCard from "@/components/UserCard";
 import { UserProps } from "@/types/User";
 
-import UserCard from "@/components/UserCard";
+import * as S from "./styles";
 
 import {
   fetchActiveUsers,
@@ -22,6 +21,7 @@ import Loading from "@/components/Loading";
 export default function Home() {
   const [searchedUser, setSearcedhUser] = useState<UserProps | null>(null);
   const [popularUsers, setPopularUsers] = useState<UserProps[]>([]);
+
   const [activeUsers, setaActiveUsers] = useState<UserProps[]>([]);
   const [popularRepos, setPopulaRepos] = useState<RepoProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,6 +40,13 @@ export default function Home() {
       const results = await Promise.all(promises);
 
       setPopularUsers(results);
+
+      // const repoPromises = popularUsers.map(async (user) => {
+      //   const reposResponse = await fetchUserRepos(`${user.login}`, 1);
+      //   return { ...user, mostStarredRepo: reposResponse };
+      // });
+      // const repoResult = await Promise.all(repoPromises);
+      // setPopularUsers(repoResult);
     };
 
     getPopularUsers();
@@ -48,23 +55,43 @@ export default function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-
     const getActiveUsers = async () => {
       const data = await fetchActiveUsers();
 
       //@ts-ignore
-      const promises = data.map(async ({ login }: UserProps) => {
+      const promises = data.items.map(async ({ login }: UserProps) => {
         return await fetchUser(login);
       });
 
       const results = await Promise.all(promises);
 
       setaActiveUsers(results);
-      setIsLoading(false);
+
     };
 
     getActiveUsers();
-  }, []);
+    setIsLoading(false);
+  }, [])
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+
+  //   const getActiveUsers = async () => {
+  //     const data = await fetchActiveUsers();
+
+  //     //@ts-ignore
+  //     const promises = data.map(async ({ login }: UserProps) => {
+  //       return await fetchUser(login);
+  //     });
+
+  //     const results = await Promise.all(promises);
+
+  //     setaActiveUsers(results);
+  //     setIsLoading(false);
+  //   };
+
+  //   getActiveUsers();
+  // }, []);
 
   useEffect(() => {
     setIsLoading(true);

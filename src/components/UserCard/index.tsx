@@ -6,7 +6,7 @@ import * as S from "./styles";
 import Image from "next/image";
 import Link from "next/link";
 
-const UserCard = ({ avatar_url, login, name, followers, email }: UserProps) => {
+const UserCard = ({ avatar_url, login, name, followers, email, mostStarredRepo }: UserProps) => {
   return (
     <Link href={`user/${login}`}>
       <S.Card bgCard={avatar_url}>
@@ -31,7 +31,7 @@ const UserCard = ({ avatar_url, login, name, followers, email }: UserProps) => {
               <MdStars color="#03045e" />
               número
             </div>
-            <span>Hello</span>
+            <span>hello</span>
             <p>description</p>
           </S.RepoBox>
           <S.ButtonProfile>Open Profile</S.ButtonProfile>

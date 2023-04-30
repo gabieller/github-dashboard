@@ -1,3 +1,5 @@
+import { RepoProps } from "./Repos";
+
 export interface UserProps {
   id?: string;
   name: string;
@@ -7,4 +9,5 @@ export interface UserProps {
   followers: number;
   following?: number;
   popularRepos?: string;
+  mostStarredRepo?: RepoProps[]
 }

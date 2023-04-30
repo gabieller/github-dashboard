@@ -60,16 +60,14 @@ export const fetchPopularUsers = async (): Promise<UserProps[]> => {
 };
 
 export const fetchActiveUsers = async (): Promise<UserProps[]> => {
-  const now = new Date();
-  const lastMonth = new Date(
-    now.getFullYear(),
-    now.getMonth() - 1,
-    now.getDate()
-  );
+  const lastMonthDate = moment().subtract(1, "month").format("YYYY-MM-DD");
 
-  const res = await axios.get(`${API_URL}/users`, {
+
+  const res = await axios.get(`${API_URL}/search/users`, {
     params: {
-      created: lastMonth.toISOString(),
+      q: `created:>${lastMonthDate}`,
+      sort: "starts",
+      order: "desc",
       per_page: 3,
     },
     headers,
