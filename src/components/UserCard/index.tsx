@@ -20,7 +20,7 @@ const UserCard = ({ avatar_url, login, name, followers, email }: UserProps) => {
             <p>{email ?? login}</p>
 
             <S.FollowersContainer>
-              <MdStars />
+              <MdStars color="#03045e" />
               <p>{followers} followers</p>
             </S.FollowersContainer>
           </S.CardContent>
@@ -28,7 +28,7 @@ const UserCard = ({ avatar_url, login, name, followers, email }: UserProps) => {
 
           <S.RepoBox>
             <div>
-              <MdStars />
+              <MdStars color="#03045e" />
               número
             </div>
             <span>Hello</span>

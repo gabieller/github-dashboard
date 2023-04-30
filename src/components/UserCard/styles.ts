@@ -58,7 +58,7 @@ export const CardContent = styled.div`
   margin-top: 2rem;
 
   span {
-    font-weight: bold;
+    font-weight: 500;
   }
 `;
 
