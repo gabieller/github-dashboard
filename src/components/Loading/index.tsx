@@ -1,5 +1,8 @@
+
+import * as S from './styles'
+
 const Loading = () => {
-  return <div>Page is loading.......</div>;
+  return <S.Loader />;
 };
 
 export default Loading;

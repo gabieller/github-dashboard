@@ -7,13 +7,16 @@ import { fetchUser, fetchUserRepos } from "@/services/api";
 import { UserProps } from "@/types/User";
 
 import { AiFillGithub } from "react-icons/ai";
+import { BsPeopleFill } from "react-icons/bs";
 
 import * as S from "./styles";
 import RepoCard from "@/components/RepoCard";
+import Loading from "@/components/Loading";
+import { RepoProps } from "@/types/Repos";
 
 const User = () => {
-  const [userDetails, setUserDetails] = useState<UserProps[]>([]);
-  const [userRepos, setUserRepos] = useState<UserProps[]>([]);
+  const [userDetails, setUserDetails] = useState<UserProps>();
+  const [userRepos, setUserRepos] = useState<RepoProps[]>([]);
 
   const router = useRouter();
   const { user } = router.query;
@@ -23,18 +26,31 @@ const User = () => {
       const userResponse = await fetchUser(`${user}`);
       setUserDetails(userResponse);
 
-      const reposResponse = await fetchUserRepos(`${user}`, 4)
+      const { id, avatar_url, login, name, followers, following, email } =
+        userResponse;
+
+      const userData: UserProps = {
+        id,
+        avatar_url,
+        email,
+        login,
+        name,
+        followers,
+        following,
+      };
+
+      setUserDetails(userData);
+
+      const reposResponse = await fetchUserRepos(`${user}`, 4);
       setUserRepos(reposResponse);
     };
 
     fetchUserData();
   }, [user]);
 
-  if (!userDetails) {
-    return <div>Loading user data...</div>;
+  if (userDetails === undefined) {
+    return <Loading />;
   }
-
-console.log(userRepos)
 
   return (
     <S.Details>
@@ -54,27 +70,37 @@ console.log(userRepos)
         </Link>
       </div>
 
-<S.Grid>
-<S.Description>
+      <S.Grid>
         <S.Infos>
-          <p>{userDetails?.name}</p>
-          <p>{userDetails?.login}</p>
+          <h2>{userDetails?.name}</h2>
+          <h2>{userDetails?.login}</h2>
+          <S.Line />
+          <div>
+            <BsPeopleFill />
+            <p>{userDetails?.followers} followers</p> ·
+            <p>{userDetails?.following} following</p>
+          </div>
         </S.Infos>
-        <hr />
-        <S.RowGrid>
-          <p>{userDetails?.followers} followers</p>
-          <p>{userDetails?.following} following</p>
-        </S.RowGrid>
-      
-      </S.Description>
-      <S.Repos>
-      {userRepos.map((repo) => (
-      <RepoCard key={repo.id} name={repo.name} description={repo.description} />
-      ))}
-      </S.Repos>
-</S.Grid>
-
-    
+        <S.Repos>
+          {userRepos?.map(
+            ({
+              id,
+              name,
+              description,
+              html_url,
+              stargazers_count,
+            }: RepoProps) => (
+              <RepoCard
+                key={id}
+                name={name}
+                description={description}
+                html_url={html_url}
+                stargazers_count={stargazers_count}
+              />
+            )
+          )}
+        </S.Repos>
+      </S.Grid>
     </S.Details>
   );
 };

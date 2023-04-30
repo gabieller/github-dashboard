@@ -29,5 +29,6 @@ export const Card = styled.div<{ borderColor: string }>`
 
   span {
     font-weight: 500;
+    word-break: break-word;
   }
 `;

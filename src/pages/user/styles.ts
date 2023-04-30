@@ -13,12 +13,11 @@ export const Details = styled.div`
     align-items: normal;
   }
 
-
   button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #1F6EEB;
+    background-color: #0077b6;
     color: #fff;
     height: 3rem;
     width: 100%;
@@ -29,18 +28,10 @@ export const Details = styled.div`
     cursor: pointer;
     margin-top: 1rem;
 
-
     &:hover {
-    background-color: #1F6EEB90;
-
+      background-color: #0077b690;
     }
   }
-`;
-
-export const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 `;
 
 export const Infos = styled.div`
@@ -49,30 +40,29 @@ export const Infos = styled.div`
   align-items: start;
   gap: 0.8rem;
 
-  p {
+  h2 {
+    font-weight: 500;
     font-size: 2rem;
   }
-`;
 
-export const RowGrid = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  p {
-    text-transform: capitalize;
+  div {
+    display: flex;
+    gap: 0.5rem;
   }
+`;
+export const Line = styled.hr`
+  width: 100%;
+  border-top: 1px solid #46516850;
 `;
 
 export const Grid = styled.div`
-display: flex;
-flex-direction: column;
-
-
-`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
 
 export const Repos = styled.div`
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 1rem;
-`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+`;

@@ -10,9 +10,9 @@ const headers = {
   Authorization: `Bearer ${API_ACCESS_TOKEN}`,
 };
 
-export const fetchUser = async (userName: string): Promise<UserProps[]> => {
+export const fetchUser = async (userName: string): Promise<UserProps> => {
   try {
-    const res = await axios.get<UserProps[]>(`${API_URL}/users/${userName}`, {
+    const res = await axios.get<UserProps>(`${API_URL}/users/${userName}`, {
       headers,
     });
     return res.data;
