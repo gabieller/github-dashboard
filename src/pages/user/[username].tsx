@@ -15,8 +15,8 @@ import { Loading } from "@/components/Loading";
 import { RepoCard } from "@/components/RepoCard";
 
 const User = () => {
-  const [userDetails, setUserDetails] = useState<User>();
-  const [userRepos, setUserRepos] = useState<Repo[]>();
+  const [userDetails, setUserDetails] = useState<User | undefined>();
+  const [userRepos, setUserRepos] = useState<Repo[] | undefined>();
 
   const router = useRouter();
   const { username } = router.query;
