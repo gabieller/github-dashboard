@@ -8,7 +8,7 @@ import {
 } from "@/services/api";
 
 import { RepoProps } from "@/types/Repos";
-import { UserProps } from "@/types/User";
+import { User, UserProps } from "@/types/User";
 
 import * as S from "./styles";
 import { Loading } from "@/components/Loading";
@@ -28,16 +28,17 @@ export default function Home() {
       setIsLoading(true);
       const data = await searchUser(undefined, "stars");
 
-      const promises = data.items.map(async (item: UserProps) => {
-        const { login }: UserProps = item;
+      const promises = data.items?.map(async (item: User) => {
+        const { login }: User = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
       });
 
+      //@ts-ignore
       const results = await Promise.all(promises);
 
-      setPopularUsers(results);
+      setPopularUsers(results as UserProps[]);
       setIsLoading(false);
     };
 
@@ -49,16 +50,17 @@ export default function Home() {
       setIsLoading(true);
       const data = await searchUser(undefined, "repositories");
 
-      const promises = data.items.map(async (item: UserProps) => {
-        const { login }: UserProps = item;
+      const promises = data.items?.map(async (item: User) => {
+        const { login }: User = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
       });
 
+      //@ts-ignore
       const results = await Promise.all(promises);
 
-      setaActiveUsers(results);
+      setaActiveUsers(results as UserProps[]);
       setIsLoading(false);
     };
 
@@ -70,17 +72,9 @@ export default function Home() {
 
     const getPopularRepos = async () => {
       const res = await searchRepositories(undefined, "stars");
+      const popularRepos = res.items;
 
-      const popularRepos = res.items.map(
-        ({ id, name, description, html_url, stargazers_count }: RepoProps) => ({
-          id,
-          name,
-          description,
-          html_url,
-          stargazers_count,
-        })
-      );
-      setPopulaRepos(popularRepos);
+      setPopulaRepos(popularRepos as RepoProps[]);
       setIsLoading(false);
     };
 

@@ -7,7 +7,7 @@ import {
   searchUser,
 } from "@/services/api";
 
-import { UserProps } from "@/types/User";
+import { User, UserProps } from "@/types/User";
 import { RepoProps } from "@/types/Repos";
 
 import { TrendingUsers } from "@/components/TrendingUsers";
@@ -31,20 +31,23 @@ export default function Search() {
   useEffect(() => {
     const getPopularUsers = async () => {
       setIsLoading(true);
+
+      //@ts-ignore
       const decodedUrl = decodeURIComponent(q);
 
       const data = await searchUser(decodedUrl, "stars");
 
-      const promises = data.items?.map(async ({ login }: UserProps) => {
+      const promises = data.items?.map(async (item: User) => {
+        const { login }: User = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
       });
 
+      //@ts-ignore
       const results = await Promise.all(promises);
 
-
-      setPopularUsers(results as UserProps[]); 
+      setPopularUsers(results as UserProps[]);
       setIsLoading(false);
     };
 
@@ -54,16 +57,20 @@ export default function Search() {
   useEffect(() => {
     const getActiveUsers = async () => {
       setIsLoading(true);
+
+      //@ts-ignore
       const decodedUrl = decodeURIComponent(q);
 
       const data = await searchUser(decodedUrl, "repositories");
 
-      const promises = data.items?.map(async ({ login }: UserProps) => {
+      const promises = data.items?.map(async (item: User) => {
+        const { login }: User = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
       });
 
+      //@ts-ignore
       const results = await Promise.all(promises);
 
       setaActiveUsers(results as UserProps[]);
@@ -77,18 +84,13 @@ export default function Search() {
     setIsLoading(true);
 
     const getPopularRepos = async () => {
-      const res = await searchRepositories(undefined, "stars");
+      //@ts-ignore
+      const decodedUrl = decodeURIComponent(q);
 
-      const popularRepos = res.items.map(
-        ({ id, name, description, html_url, stargazers_count }: RepoProps) => ({
-          id,
-          name,
-          description,
-          html_url,
-          stargazers_count,
-        })
-      );
-      setPopulaRepos(popularRepos);
+      const res = await searchRepositories(decodedUrl, "stars");
+      const popularRepos = res.items;
+
+      setPopulaRepos(popularRepos as RepoProps[]);
       setIsLoading(false);
     };
 
