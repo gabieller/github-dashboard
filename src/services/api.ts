@@ -54,9 +54,9 @@ export const searchUser = async (
   sortBy: SortBy
 ): Promise<UserProps> => {
   const res = await axios.get<UserProps>(
-    `${API_URL}/search/users?q=${term ? `${term}+` : ""}${
-      term ? "in:name+" : ""
-    }created:>${lastMonthDate}`,
+    `${API_URL}/search/users?q=${
+      term ? `${term}+` : ""
+    }${term ? "in:name+" : ""}created:>${lastMonthDate}`,
     {
       params: {
         sort: sortBy,
@@ -75,13 +75,12 @@ export const searchRepositories = async (
   sortBy: SortBy
 ): Promise<RepoProps> => {
   const res = await axios.get<RepoProps>(
-    `${API_URL}/search/repositories?q=${term ? `${term}+` : ""}${
-      term ? "in:name+" : ""
-    }created:>${sortBy === "stars" ? lastYear : lastMonthDate}`,
+    `${API_URL}/search/repositories?q=${term ? `${term}+` : ""}${term ? "in:name+" : ""}created:>${
+      sortBy === "stars" ? lastYear : lastMonthDate
+    }`,
     {
       params: {
         sort: sortBy,
-        in: `${term ? "name" : ""}`,
         order: "desc",
         per_page: 4,
       },
