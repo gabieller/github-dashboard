@@ -16,8 +16,15 @@ export function NavBar() {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSeachQuery("")
     }
   };
+
+  const handleClick = () =>{
+    router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+    setSeachQuery("")
+
+  }
 
   return (
     <S.NavBar>
@@ -30,12 +37,11 @@ export function NavBar() {
           placeholder="Search..."
           onChange={(e) => setSeachQuery(e.target.value)}
           onKeyDown={handleKeyDown}
+          value={searchQuery}
         />
 
         <AiOutlineSearch
-          onClick={() =>
-            router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
-          }
+          onClick={handleClick}
           size={32}
           color="#2d3a53"
         />
