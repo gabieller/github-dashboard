@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Repo, RepoProps } from "@/types/Repos";
+import { RepoProps } from "@/types/Repos";
 
 import { limitChars } from "@/utils/limitChars";
 import { generateRandomBorderColor } from "@/utils/generateRandomBorderColor";

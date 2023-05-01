@@ -10,9 +10,10 @@ import { fetchUser, fetchUserRepos } from "@/services/api";
 import { AiFillGithub } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 
-import * as S from "./styles";
 import { Loading } from "@/components/Loading";
 import { RepoCard } from "@/components/RepoCard";
+
+import * as S from "./styles";
 
 const User = () => {
   const [userDetails, setUserDetails] = useState<User | undefined>();

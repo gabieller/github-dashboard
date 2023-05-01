@@ -1,5 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { TrendingUsers } from ".";
+import { useRouter } from "next/router";
+
+jest.mock("next/router", () => ({
+  useRouter: () => ({
+    query: { q: "search term" },
+  }),
+}));
 
 const mockPopularUsers = [
   {
@@ -11,7 +18,7 @@ const mockPopularUsers = [
       followers: 123,
       email: "johndoe@example.com",
     },
-    repo: [
+    repos: [
       {
         id: 1,
         name: "repo1",
@@ -29,7 +36,7 @@ const mockPopularUsers = [
       followers: 789,
       email: "janedoe@example.com",
     },
-    repo: [
+    repos: [
       {
         id: 2,
         name: "repo2",
@@ -41,9 +48,11 @@ const mockPopularUsers = [
 ];
 
 describe("TrendingUsers", () => {
-  it("should renders the component title", () => {
-    render(<TrendingUsers popularUsers={mockPopularUsers} />);
-    expect(screen.getByText("Trending Users")).toBeInTheDocument();
+  it("should 'Trending Users' header", () => {
+    const { getByText } = render(
+      <TrendingUsers popularUsers={mockPopularUsers} />
+    );
+    expect(getByText("Trending Users")).toBeInTheDocument();
   });
 
   it("should renders user cards for each popular user", () => {
@@ -52,9 +61,9 @@ describe("TrendingUsers", () => {
     expect(userCards).toHaveLength(mockPopularUsers.length);
   });
 
-
-
-
-
-
+  it("should 'No users were found' message when popularUsers is empty", () => {
+    const popularUsers = [];
+    const { getByText } = render(<TrendingUsers popularUsers={popularUsers} />);
+    expect(getByText(/No users were found/i)).toBeInTheDocument();
+  });
 });

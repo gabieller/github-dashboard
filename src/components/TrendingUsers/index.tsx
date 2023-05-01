@@ -27,7 +27,7 @@ export const TrendingUsers = ({ popularUsers }: TrendingUsersProps) => {
           </S.Grid>
         </>
       ) : (
-        <p>{`No users were found for the term: ${q}`}</p>
+        <p data-testid="no-users">{`No users were found for the term: ${q}`}</p>
       )}
     </div>
   );
