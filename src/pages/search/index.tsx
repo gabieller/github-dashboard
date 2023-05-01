@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   fetchUser,
@@ -17,12 +17,11 @@ import { TopRepos } from "@/components/TopRepos";
 
 import * as S from "./styles";
 
-
 //TODO liddar com o erro
 export default function Search() {
-  const [popularUsers, setPopularUsers] = useState<UserProps[]>();
-  const [activeUsers, setaActiveUsers] = useState<UserProps[]>();
-  const [popularRepos, setPopulaRepos] = useState<RepoProps[]>();
+  const [popularUsers, setPopularUsers] = useState<UserProps[] | undefined>();
+  const [activeUsers, setaActiveUsers] = useState<UserProps[] | undefined>();
+  const [popularRepos, setPopulaRepos] = useState<RepoProps[] | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   // const [error, setError] = useState<boolean>(false);
 
@@ -33,18 +32,19 @@ export default function Search() {
     const getPopularUsers = async () => {
       setIsLoading(true);
       const decodedUrl = decodeURIComponent(q);
+
       const data = await searchUser(decodedUrl, "stars");
 
-      const promises = data.items.map(async (user: UserProps) => {
-        const fetchedUser = await fetchUser(user.login);
-        const fetchedRepos = await fetchUserRepos(user.login, 1);
-        return { fetchedUser, fetchedRepos };
+      const promises = data.items?.map(async ({ login }: UserProps) => {
+        const user = await fetchUser(login);
+        const repos = await fetchUserRepos(login, 1);
+        return { user, repos };
       });
 
       const results = await Promise.all(promises);
 
-      setPopularUsers(results);
 
+      setPopularUsers(results as UserProps[]); 
       setIsLoading(false);
     };
 
@@ -58,7 +58,7 @@ export default function Search() {
 
       const data = await searchUser(decodedUrl, "repositories");
 
-      const promises = data.items.map(async ({ login }: UserProps) => {
+      const promises = data.items?.map(async ({ login }: UserProps) => {
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
@@ -66,7 +66,7 @@ export default function Search() {
 
       const results = await Promise.all(promises);
 
-      setaActiveUsers(results);
+      setaActiveUsers(results as UserProps[]);
       setIsLoading(false);
     };
 

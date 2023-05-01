@@ -10,13 +10,12 @@ interface TrendingUsersProps {
 }
 
 export const TrendingUsers = ({ popularUsers }: TrendingUsersProps) => {
-  console.log(popularUsers)
   return (
     <div>
        <h3>Trending Users</h3>
       <S.Grid>
-        {popularUsers?.map((popularUser: UserProps) => {
-          const { user, repos } = popularUser;
+      {popularUsers?.map((popularUsers: UserProps) => {
+          const { user, repos } = popularUsers;
           return <UserCard key={user.id} user={user} repos={repos} />;
         })}
       </S.Grid>
