@@ -8,6 +8,7 @@ export interface Repo {
 }
 
 export interface RepoProps {
+  id?: number  | undefined;
   items?: Repo[];
   repo: Repo;
 }

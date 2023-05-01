@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
-import { UserProps } from "@/types/User";
-import { RepoProps } from "@/types/Repos";
+import { User } from "@/types/User";
+import { Repo } from "@/types/Repos";
 import { fetchUser, fetchUserRepos } from "@/services/api";
 
 import { AiFillGithub } from "react-icons/ai";
@@ -15,32 +15,23 @@ import { Loading } from "@/components/Loading";
 import { RepoCard } from "@/components/RepoCard";
 
 const User = () => {
-  const [userDetails, setUserDetails] = useState<UserProps>();
-  const [userRepos, setUserRepos] = useState<RepoProps[]>([]);
+  const [userDetails, setUserDetails] = useState<User>();
+  const [userRepos, setUserRepos] = useState<Repo[]>();
 
   const router = useRouter();
   const { username } = router.query;
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userResponse = await fetchUser(username);
+      //@ts-ignore
+      const res = await fetchUser(username);
 
-      const { id, avatar_url, login, name, followers, following, email } =
-        userResponse;
+      //@ts-ignore
+      setUserDetails(res);
 
-      const userData: UserProps = {
-        id,
-        avatar_url,
-        email,
-        login,
-        name,
-        followers,
-        following,
-      };
-
-      setUserDetails(userData);
-
+      //@ts-ignore
       const reposResponse = await fetchUserRepos(username, 4);
+      //@ts-ignore
       setUserRepos(reposResponse);
     };
 
@@ -83,23 +74,9 @@ const User = () => {
           </div>
         </S.Infos>
         <S.Repos>
-          {userRepos?.map(
-            ({
-              id,
-              name,
-              description,
-              html_url,
-              stargazers_count,
-            }: RepoProps) => (
-              <RepoCard
-                key={id}
-                name={name}
-                description={description}
-                html_url={html_url}
-                stargazers_count={stargazers_count}
-              />
-            )
-          )}
+          {userRepos?.map((repo: Repo) => {
+            return <RepoCard key={repo.id} repo={repo} />;
+          })}
         </S.Repos>
       </S.Grid>
     </S.Details>

@@ -1,4 +1,4 @@
-import { RepoProps } from "./Repos";
+import { Repo } from "./Repos";
 
 export interface User {
   id?: string;
@@ -23,5 +23,5 @@ export interface UserProps {
     following?: number;
     popularRepos?: string;
   };
-  repos: RepoProps[];
+  repos: Repo[];
 }

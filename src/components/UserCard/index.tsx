@@ -1,4 +1,3 @@
-
 import { MdStars } from "react-icons/md";
 
 import Image from "next/image";
@@ -7,8 +6,6 @@ import Link from "next/link";
 import * as S from "./styles";
 import { limitChars } from "@/utils/limitChars";
 import { UserProps } from "@/types/User";
-
-
 
 export const UserCard = ({ user, repos }: UserProps) => {
   return (
@@ -35,16 +32,19 @@ export const UserCard = ({ user, repos }: UserProps) => {
           </S.CardContent>
           <S.Line />
 
-          <S.RepoBox>
-            <div>
-              <MdStars color="#03045e" />
-              {repos[0]?.stargazers_count}
-            </div>
-            <p>{repos[0]?.name}</p>
-            <span>
-              {repos[0]?.description && limitChars(repos[0]?.description, 30)}
-            </span>
-          </S.RepoBox>  
+          {repos.length > 0 && (
+            <S.RepoBox>
+              <div>
+                <MdStars color="#03045e" />
+                {repos[0]?.stargazers_count}
+              </div>
+              <p>{repos[0]?.name}</p>
+              <span>
+                {repos[0]?.description && limitChars(repos[0]?.description, 30)}
+              </span>
+            </S.RepoBox>
+          )}
+
           <S.ButtonProfile>Open Profile</S.ButtonProfile>
         </S.Wrapper>
       </S.Card>
