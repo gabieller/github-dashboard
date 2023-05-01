@@ -1,8 +1,5 @@
+import * as S from "./styles";
 
-import * as S from './styles'
-
-const Loading = () => {
+export const Loading = () => {
   return <S.Loader />;
 };
-
-export default Loading;

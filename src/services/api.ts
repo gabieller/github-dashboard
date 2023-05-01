@@ -7,12 +7,17 @@ const API_URL = "https://api.github.com";
 const API_ACCESS_TOKEN = process.env.NEXT_PUBLIC_API_ACCESS_TOKEN;
 
 const headers = {
-  Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+  Authorization: API_ACCESS_TOKEN ? `Bearer ${API_ACCESS_TOKEN}` : "",
 };
 
-export const fetchUser = async (userName: string): Promise<UserProps> => {
+type SortBy = `stars` | `followers` | `repositories`;
+
+const lastMonthDate = moment().subtract(1, "month").format("YYYY-MM-DD");
+const lastYear = moment().subtract(1, "year").format("YYYY-MM-DD");
+
+export const fetchUser = async (username: string): Promise<UserProps> => {
   try {
-    const res = await axios.get<UserProps>(`${API_URL}/users/${userName}`, {
+    const res = await axios.get<UserProps>(`${API_URL}/users/${username}`, {
       headers,
     });
     return res.data;
@@ -22,12 +27,12 @@ export const fetchUser = async (userName: string): Promise<UserProps> => {
   }
 };
 export const fetchUserRepos = async (
-  userName: string,
+  username: string,
   quantity: number
 ): Promise<UserProps> => {
   try {
     const res = await axios.get<UserProps>(
-      `${API_URL}/users/${userName}/repos`,
+      `${API_URL}/users/${username}/repos`,
       {
         params: {
           sort: "stars",
@@ -43,50 +48,45 @@ export const fetchUserRepos = async (
   }
 };
 
-export const fetchPopularUsers = async (): Promise<UserProps[]> => {
-  const lastMonthDate = moment().subtract(1, "month").format("YYYY-MM-DD");
-
-  const res = await axios.get<UserProps[]>(`${API_URL}/search/users?`, {
-    params: {
-      q: `created:>${lastMonthDate}`,
-      sort: "followers",
-      order: "desc",
-      per_page: 3,
-    },
-    headers,
-  });
-
-  return res.data;
-};
-
-export const fetchActiveUsers = async (): Promise<UserProps[]> => {
-  const lastMonthDate = moment().subtract(1, "month").format("YYYY-MM-DD");
-
-  const res = await axios.get(`${API_URL}/users`, {
-    params: {
-      q: `created:>${lastMonthDate}`,
-      sort: "repos",
-      order: "desc",
-      per_page: 3,
-    },
-    headers,
-  });
+export const searchUser = async (term: string | undefined, sortBy: SortBy) => {
+  const res = await axios.get<UserProps[]>(
+    `${API_URL}/search/users?q=${
+      term ? `${term}+` : ""
+    }created:>${lastMonthDate}`,
+    {
+      params: {
+        sort: sortBy,
+        in: `${term ? "name" : ""}`,
+        order: "desc",
+        per_page: 3,
+      },
+      headers,
+    }
+  );
 
   return res.data;
 };
 
-export const fetchRepositories = async () => {
-  const lastYear = moment().subtract(1, 'year').format('YYYY-MM-DD');
+export const searchRepositories = async (
+  term: string | undefined,
+  sortBy: SortBy
+) => {
+  const res = await axios.get<UserProps[]>(
+    `${API_URL}/search/repositories?q=${term ? `${term}+` : ""}created:>${
+      sortBy === "stars" ? lastYear : lastMonthDate
+    }`,
+    {
+      params: {
+        sort: sortBy,
+        in: `${term ? "name" : ""}`,
+        order: "desc",
+        per_page: 3,
+      },
+      headers,
+    }
+  );
 
-  const response = await axios.get(`${API_URL}/search/repositories`, {
-    params: {
-      q: `created:>${lastYear}`,
-      sort: "stars",
-      order: "desc",
-      per_page: 4,
-    },
-    headers,
-  });
-
-  return  response.data;
+  return res.data;
 };
+
+

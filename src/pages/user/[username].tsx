@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 
-import Loading from "@/components/Loading";
-import RepoCard from "@/components/RepoCard";
 import { UserProps } from "@/types/User";
 import { RepoProps } from "@/types/Repos";
 import { fetchUser, fetchUserRepos } from "@/services/api";
@@ -13,18 +11,19 @@ import { AiFillGithub } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 
 import * as S from "./styles";
+import { Loading, RepoCard } from "@/components";
 
 const User = () => {
   const [userDetails, setUserDetails] = useState<UserProps>();
   const [userRepos, setUserRepos] = useState<RepoProps[]>([]);
 
   const router = useRouter();
-  const { user } = router.query;
+  const { username } = router.query;
+  console.log(username);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userResponse = await fetchUser(`${user}`);
-      setUserDetails(userResponse);
+      const userResponse = await fetchUser(username);
 
       const { id, avatar_url, login, name, followers, following, email } =
         userResponse;
@@ -41,12 +40,14 @@ const User = () => {
 
       setUserDetails(userData);
 
-      const reposResponse = await fetchUserRepos(`${user}`, 4);
+      const reposResponse = await fetchUserRepos(username, 4);
       setUserRepos(reposResponse);
     };
 
-    fetchUserData();
-  }, [user]);
+    if (username) {
+      fetchUserData();
+    }
+  }, [username]);
 
   if (userDetails === undefined) {
     return <Loading />;
@@ -62,7 +63,7 @@ const User = () => {
           height={300}
           style={{ borderRadius: "1rem" }}
         />
-        <Link href={`https://github.com/${user}`} target="_blank">
+        <Link href={`https://github.com/${username}`} target="_blank">
           <button>
             <AiFillGithub size={24} />
             Github profile

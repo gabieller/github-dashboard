@@ -7,19 +7,18 @@ import { AiOutlineSearch } from "react-icons/ai";
 import * as S from "./styles";
 
 import logo from "public/logo.svg";
+import { useRouter } from "next/router";
 
-interface NavBarProps {
-  searchUser: (userName: string) => Promise<void>;
-}
+export function NavBar() {
+  const [searchQuery, setSeachQuery] = useState<string>("");
 
-const NavBar = ({ searchUser }: NavBarProps) => {
-  const [username, setUserName] = useState<string>("");
+  const router = useRouter();
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      searchUser(username);
-    }
-  };
+  // const handleKeyDown = (e: KeyboardEvent) => {
+  //   if (e.key === "Enter") {
+  //     setSeachQuery(searchQuery);
+  //   }
+  // };
 
   return (
     <S.NavBar>
@@ -27,19 +26,21 @@ const NavBar = ({ searchUser }: NavBarProps) => {
         <Image src={logo} alt="Uphill logo" data-testid="logo" />
       </Link>
       <S.InputWrapper>
-        <AiOutlineSearch onClick={() => searchUser(username)} />
-
         <input
           type="text"
           placeholder="Search"
-          onChange={(e) => setUserName(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => setSeachQuery(e.target.value)}
+          // onKeyDown={handleKeyDown}
         />
-        {/* <button onClick={() => searchUser(username)}> */}
-        {/* </button> */}
+        <button>
+          <AiOutlineSearch
+            size={42}
+            onClick={() =>
+              router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+            }
+          />
+        </button>
       </S.InputWrapper>
     </S.NavBar>
   );
-};
-
-export default NavBar;
+}

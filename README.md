@@ -8,7 +8,7 @@
 
 <ul>
   <li><a href="https://reactjs.org/">React</a></li>
-  <li><a href="https://vitejs.dev/">Vite</a></li>
+  <li><a href="https://nextjs.org/">Next.js</a></li>
   <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
   <li><a href="https://styled-components.com/
   ">Styled Components</a></li>

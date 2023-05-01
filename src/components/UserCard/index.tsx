@@ -5,13 +5,13 @@ import { MdStars } from "react-icons/md";
 import * as S from "./styles";
 import Image from "next/image";
 import Link from "next/link";
+import { limitChars } from "@/utils/limitChars";
 
 //@ts-ignore
-const UserCard = (user, repo) => {
-
+export const  UserCard = ({ user, repo }) => {
   return (
-    <Link href={`user/${user.login}`}>
-      <S.Card bgCard={user.avatar_url}>
+    <Link href={`/user/${user.login}`}>
+      <S.Card bgCard={user.avatar_url} data-testid="user-card">
         <S.Wrapper>
           <S.ImageContainer>
             <Image
@@ -24,7 +24,7 @@ const UserCard = (user, repo) => {
 
           <S.CardContent>
             <span>{user.name ?? user.login}</span>
-            <p>{user.email ?? user.login}</p>
+            <p data-testid="email">{user.email ?? user.login}</p>
 
             <S.FollowersContainer>
               <MdStars color="#03045e" />
@@ -38,8 +38,8 @@ const UserCard = (user, repo) => {
               <MdStars color="#03045e" />
               número
             </div>
-            {/* <span>{repo[0].name}</span>
-            <span>{repo[0].description}</span> */}
+            <span>{repo[0]?.name}</span>
+            <span>{repo[0]?.description}</span>
           </S.RepoBox>
           <S.ButtonProfile>Open Profile</S.ButtonProfile>
         </S.Wrapper>
@@ -47,5 +47,3 @@ const UserCard = (user, repo) => {
     </Link>
   );
 };
-
-export default UserCard;

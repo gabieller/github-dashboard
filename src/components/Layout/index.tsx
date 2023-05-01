@@ -1,42 +1,32 @@
-import React, { PropsWithChildren, useState } from "react";
-import Navbar from "@/components/Navbar";
-import { UserProps } from "@/types/User";
-import { fetchUser } from "@/services/api";
+import React, { PropsWithChildren} from "react";
+import { NavBar } from "../NavBar";
 
-const Layout = ({ children }: PropsWithChildren) => {
-  const [searchedUser, setSearcedhUser] = useState<UserProps | null>(null);
+ function Layout({ children }: PropsWithChildren) {
 
-  const [error, setError] = useState<boolean>(false);
+  // const [error, setError] = useState<boolean>(false);
 
-  const searchUser = async (userName: string): Promise<void> => {
-    setError(false);
 
-    try {
-      const data = await fetchUser(userName);
 
-      const { id, avatar_url, login, name, followers, email } = data;
+  // const searchUser = async (userName: string): Promise<void> => {
+  //   setError(false);
 
-      const userData: UserProps = {
-        id,
-        avatar_url,
-        email,
-        login,
-        name,
-        followers,
-      };
+  //   try {
+  //     // const data = await fetchUserTerm(userName);
+  //     const data = await fetchRepoTerm(userName);
 
-      setSearcedhUser(userData);
-    } catch (error) {
-      if (error.response?.status === 404) {
-        setError(true);
-      }
-    }
-  };
+  //     // setSearcedhUser(data);
+  //   } catch (error) {
+  //     if (error.response?.status === 404) {
+  //       setError(true);
+  //     }
+  //   }
+  // };
+
   return (
     <>
-      <Navbar searchUser={searchUser} />
-      {children}
+      <NavBar  />
+      <main>{children}</main>
     </>
   );
-};
+}
 export default Layout;

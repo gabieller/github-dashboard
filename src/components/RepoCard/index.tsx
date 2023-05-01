@@ -10,7 +10,7 @@ import * as S from "./styles";
 
 const colors = ["#03045e", "#0077b6", "#00b4d8", "#caf0f8"];
 
-const RepoCard = ({
+export const  RepoCard =({
   name,
   description,
   html_url,
@@ -24,10 +24,8 @@ const RepoCard = ({
           <MdStars color="#03045e" />
           <p>{stargazers_count}</p>
         </div>
-        {description && limitChars(description, 60) }
+        {description && limitChars(description, 60)}
       </S.Card>
     </Link>
   );
-};
-
-export default RepoCard;
+}

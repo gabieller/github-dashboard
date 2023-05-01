@@ -5,7 +5,7 @@ export interface UserProps {
     id?: string;
     name: string;
     email?: string;
-    avatar_url: string;
+    avatarUrl: string;
     login: string;
     followers: number;
     following?: number;

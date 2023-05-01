@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 
-import UserCard from "@/components/UserCard";
 import { UserProps } from "@/types/User";
 
-import * as S from "./styles";
 
 import {
-  fetchActiveUsers,
-  fetchPopularUsers,
-  fetchRepositories,
   fetchUser,
   fetchUserRepos,
+  searchRepositories,
+  searchUser,
 } from "@/services/api";
 
 import { RepoProps } from "@/types/Repos";
 
-import RepoCard from "@/components/RepoCard";
-import Loading from "@/components/Loading";
+import * as S from "./styles";
+import { Loading } from "@/components/Loading";
+import { TrendingUsers } from "@/components/TrendingUsers";
+import { ActiveUsers } from "@/components/ActiveUsers";
+import { TopRepos } from "@/components/TopRepos";
 
 export default function Home() {
-  const [searchedUser, setSearcedhUser] = useState<UserProps | null>(null);
-  const [popularUsers, setPopularUsers] = useState<UserProps[]>([]);
+  const [popularUsers, setPopularUsers] = useState<UserProps[]>();
 
   const [activeUsers, setaActiveUsers] = useState<UserProps[]>([]);
   const [popularRepos, setPopulaRepos] = useState<RepoProps[]>([]);
@@ -30,7 +29,7 @@ export default function Home() {
   useEffect(() => {
     const getPopularUsers = async () => {
       setIsLoading(true);
-      const data = await fetchPopularUsers();
+      const data = await searchUser(undefined, "stars");
 
       const promises = data.items.map(async ({ login }: UserProps) => {
         const user = await fetchUser(login);
@@ -41,6 +40,7 @@ export default function Home() {
       const results = await Promise.all(promises);
 
       setPopularUsers(results);
+
       setIsLoading(false);
     };
 
@@ -50,9 +50,9 @@ export default function Home() {
   useEffect(() => {
     const getActiveUsers = async () => {
       setIsLoading(true);
-      const data = await fetchActiveUsers();
+      const data = await searchUser(undefined, "repositories");
 
-      const promises = data.map(async ({ login }: UserProps) => {
+      const promises = data.items.map(async ({ login }: UserProps) => {
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
@@ -71,7 +71,7 @@ export default function Home() {
     setIsLoading(true);
 
     const getPopularRepos = async () => {
-      const res = await fetchRepositories();
+      const res = await searchRepositories(undefined, "stars");
 
       const popularRepos = res.items.map(
         ({ id, name, description, html_url, stargazers_count }: RepoProps) => ({
@@ -91,72 +91,18 @@ export default function Home() {
 
   return (
     <div>
-      <main>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            {searchedUser && <UserCard {...searchedUser} />}
-            {error && <p>User not found!</p>}
-            <S.Container>
-              <div>
-                <h3>Trending Users</h3>
-                <S.Grid>
-                  {popularUsers?.map(({ user, repo }: UserProps) => (
-                    <UserCard
-                      key={user.id}
-                      avatar_url={user.avatar_url}
-                      login={user.login}
-                      name={user.name}
-                      followers={user.followers}
-                      email={user.email}
-                      // repo={repos[0]}
-                    />
-                  ))}
-                </S.Grid>
-              </div>
-              <div>
-                <h3>Most Active Users</h3>
-                <S.Grid>
-                  {activeUsers?.map(({ user, repo }: UserProps) => (
-                    <UserCard
-                      key={user.id}
-                      avatar_url={user.avatar_url}
-                      login={user.login}
-                      name={user.name}
-                      followers={user.followers}
-                      email={user.email}
-                      // repo={repos[0]}
-                    />
-                  ))}
-                </S.Grid>
-              </div>
-              <div>
-                <h3>Top Repositories</h3>
-                <S.Grid>
-                  {popularRepos?.map(
-                    ({
-                      id,
-                      name,
-                      description,
-                      html_url,
-                      stargazers_count,
-                    }: RepoProps) => (
-                      <RepoCard
-                        key={id}
-                        name={name}
-                        description={description}
-                        html_url={html_url}
-                        stargazers_count={stargazers_count}
-                      />
-                    )
-                  )}
-                </S.Grid>
-              </div>
-            </S.Container>
-          </>
-        )}
-      </main>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {error && <p>User not found!</p>}
+          <S.Container>
+            {popularUsers && <TrendingUsers popularUsers={popularUsers} />}
+            {activeUsers && <ActiveUsers activeUsers={activeUsers} />}
+            {popularRepos && <TopRepos popularRepos={popularRepos} />}
+          </S.Container>
+        </>
+      )}
     </div>
   );
 }
