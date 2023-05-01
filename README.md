@@ -1,38 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# <div align="center"> Github Dashboard React App</div>
 
-## Getting Started
+<img src="src/assets/gitdash.png"/>
 
-First, run the development server:
+<p align="center">This is a sample React application that connects to the Github using Next.js as a build tool, TypeScript for type checking and Styled Components for styling.</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## 🛠️ Technologies
+
+<ul>
+  <li><a href="https://reactjs.org/">React</a></li>
+  <li><a href="https://vitejs.dev/">Vite</a></li>
+  <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+  <li><a href="https://styled-components.com/
+  ">Styled Components</a></li>
+  <li><a href="https://api.github.com/">Github Api</a></li>
+</ul>
+
+## ⚙️ Requirements
+
+<ul>
+  <li><a href="https://nodejs.org/en/">Node.js</a></li>
+  <li><a href="https://www.npmjs.com/">NPM</a></li>
+</ul>
+
+## 🚀 Installation
+
+To get started, clone this repository and install the necessary dependencies using npm or yarn:
+
+```
+# using npm
+$ npm install
+
+# using yarn
+$ yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚡️ Usage
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+To run the application locally, use the following command:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```
+# using npm
+npm run dev
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+# using yarn
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This will start a local development server on https://localhost:8000. You can then view the application in your web browser.
 
-## Learn More
+## Running Tests
 
-To learn more about Next.js, take a look at the following resources:
+This project includes automated tests to verify the functionality of the code. To run the tests locally, follow these steps:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+# using npm
+npm run test
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# using yarn
+yarn test
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```

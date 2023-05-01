@@ -62,11 +62,10 @@ export const fetchPopularUsers = async (): Promise<UserProps[]> => {
 export const fetchActiveUsers = async (): Promise<UserProps[]> => {
   const lastMonthDate = moment().subtract(1, "month").format("YYYY-MM-DD");
 
-
-  const res = await axios.get(`${API_URL}/search/users`, {
+  const res = await axios.get(`${API_URL}/users`, {
     params: {
       q: `created:>${lastMonthDate}`,
-      sort: "starts",
+      sort: "repos",
       order: "desc",
       per_page: 3,
     },
@@ -77,22 +76,17 @@ export const fetchActiveUsers = async (): Promise<UserProps[]> => {
 };
 
 export const fetchRepositories = async () => {
-  const now = new Date();
-  const lastYear = new Date(
-    now.getFullYear() - 1,
-    now.getMonth(),
-    now.getDate()
-  );
+  const lastYear = moment().subtract(1, 'year').format('YYYY-MM-DD');
 
   const response = await axios.get(`${API_URL}/search/repositories`, {
     params: {
-      q: `created:>${lastYear.toISOString()}`,
+      q: `created:>${lastYear}`,
       sort: "stars",
       order: "desc",
       per_page: 4,
     },
+    headers,
   });
 
-  const items = response.data;
-  return items;
+  return  response.data;
 };

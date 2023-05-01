@@ -28,70 +28,44 @@ export default function Home() {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsLoading(true);
     const getPopularUsers = async () => {
+      setIsLoading(true);
       const data = await fetchPopularUsers();
 
-      //@ts-ignore
       const promises = data.items.map(async ({ login }: UserProps) => {
-        return await fetchUser(login);
+        const user = await fetchUser(login);
+        const repos = await fetchUserRepos(login, 1);
+        return { user, repos };
       });
 
       const results = await Promise.all(promises);
 
       setPopularUsers(results);
-
-      // const repoPromises = popularUsers.map(async (user) => {
-      //   const reposResponse = await fetchUserRepos(`${user.login}`, 1);
-      //   return { ...user, mostStarredRepo: reposResponse };
-      // });
-      // const repoResult = await Promise.all(repoPromises);
-      // setPopularUsers(repoResult);
+      setIsLoading(false);
     };
 
     getPopularUsers();
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     const getActiveUsers = async () => {
+      setIsLoading(true);
       const data = await fetchActiveUsers();
 
-      //@ts-ignore
-      const promises = data.items.map(async ({ login }: UserProps) => {
-        return await fetchUser(login);
+      const promises = data.map(async ({ login }: UserProps) => {
+        const user = await fetchUser(login);
+        const repos = await fetchUserRepos(login, 1);
+        return { user, repos };
       });
 
       const results = await Promise.all(promises);
 
       setaActiveUsers(results);
-
+      setIsLoading(false);
     };
 
     getActiveUsers();
-    setIsLoading(false);
-  }, [])
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-
-  //   const getActiveUsers = async () => {
-  //     const data = await fetchActiveUsers();
-
-  //     //@ts-ignore
-  //     const promises = data.map(async ({ login }: UserProps) => {
-  //       return await fetchUser(login);
-  //     });
-
-  //     const results = await Promise.all(promises);
-
-  //     setaActiveUsers(results);
-  //     setIsLoading(false);
-  //   };
-
-  //   getActiveUsers();
-  // }, []);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -128,51 +102,33 @@ export default function Home() {
               <div>
                 <h3>Trending Users</h3>
                 <S.Grid>
-                  {popularUsers?.map(
-                    ({
-                      id,
-                      name,
-                      email,
-                      avatar_url,
-                      login,
-                      followers,
-                    }: UserProps) => (
-                      <UserCard
-                        key={id}
-                        id={id}
-                        avatar_url={avatar_url}
-                        login={login}
-                        name={name}
-                        followers={followers}
-                        email={email}
-                      />
-                    )
-                  )}
+                  {popularUsers?.map(({ user, repo }: UserProps) => (
+                    <UserCard
+                      key={user.id}
+                      avatar_url={user.avatar_url}
+                      login={user.login}
+                      name={user.name}
+                      followers={user.followers}
+                      email={user.email}
+                      // repo={repos[0]}
+                    />
+                  ))}
                 </S.Grid>
               </div>
               <div>
                 <h3>Most Active Users</h3>
                 <S.Grid>
-                  {activeUsers?.map(
-                    ({
-                      id,
-                      name,
-                      email,
-                      avatar_url,
-                      login,
-                      followers,
-                    }: UserProps) => (
-                      <UserCard
-                        key={id}
-                        id={id}
-                        avatar_url={avatar_url}
-                        login={login}
-                        name={name}
-                        followers={followers}
-                        email={email}
-                      />
-                    )
-                  )}
+                  {activeUsers?.map(({ user, repo }: UserProps) => (
+                    <UserCard
+                      key={user.id}
+                      avatar_url={user.avatar_url}
+                      login={user.login}
+                      name={user.name}
+                      followers={user.followers}
+                      email={user.email}
+                      // repo={repos[0]}
+                    />
+                  ))}
                 </S.Grid>
               </div>
               <div>
