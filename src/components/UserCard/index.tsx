@@ -8,8 +8,9 @@ import * as S from "./styles";
 import { limitChars } from "@/utils/limitChars";
 import { UserProps } from "@/types/User";
 
-//@ts-ignore
-export const UserCard = ({ user, repo }: UserProps) => {
+
+
+export const UserCard = ({ user, repos }: UserProps) => {
   return (
     <Link href={`/user/${user.login}`}>
       <S.Card bgCard={user.avatar_url} data-testid="user-card">
@@ -37,11 +38,11 @@ export const UserCard = ({ user, repo }: UserProps) => {
           <S.RepoBox>
             <div>
               <MdStars color="#03045e" />
-              {repo[0]?.stargazers_count}
+              {repos[0]?.stargazers_count}
             </div>
-            <p>{repo[0]?.name}</p>
+            <p>{repos[0]?.name}</p>
             <span>
-              {repo[0]?.description && limitChars(repo[0]?.description, 30)}
+              {repos[0]?.description && limitChars(repos[0]?.description, 30)}
             </span>
           </S.RepoBox>  
           <S.ButtonProfile>Open Profile</S.ButtonProfile>
