@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { UserProps } from "@/types/User";
-
 import {
   fetchUser,
   fetchUserRepos,
@@ -10,6 +8,7 @@ import {
 } from "@/services/api";
 
 import { RepoProps } from "@/types/Repos";
+import { UserProps } from "@/types/User";
 
 import * as S from "./styles";
 import { Loading } from "@/components/Loading";
@@ -19,19 +18,18 @@ import { TopRepos } from "@/components/TopRepos";
 
 export default function Home() {
   const [popularUsers, setPopularUsers] = useState<UserProps[]>();
-
-  const [activeUsers, setaActiveUsers] = useState<UserProps[]>([]);
-  const [popularRepos, setPopulaRepos] = useState<RepoProps[]>([]);
+  const [activeUsers, setaActiveUsers] = useState<UserProps[]>();
+  const [popularRepos, setPopulaRepos] = useState<RepoProps[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-
     const getPopularUsers = async () => {
       setIsLoading(true);
       const data = await searchUser(undefined, "stars");
 
-      const promises = data.items.map(async ({ login }: UserProps) => {
+      const promises = data.items.map(async (item: UserProps) => {
+        const { login }: UserProps = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };
@@ -43,7 +41,6 @@ export default function Home() {
       setIsLoading(false);
     };
 
-
     getPopularUsers();
   }, []);
 
@@ -52,7 +49,8 @@ export default function Home() {
       setIsLoading(true);
       const data = await searchUser(undefined, "repositories");
 
-      const promises = data.items.map(async ({ login }: UserProps) => {
+      const promises = data.items.map(async (item: UserProps) => {
+        const { login }: UserProps = item;
         const user = await fetchUser(login);
         const repos = await fetchUserRepos(login, 1);
         return { user, repos };

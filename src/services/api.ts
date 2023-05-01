@@ -1,3 +1,4 @@
+import { RepoProps } from "@/types/Repos";
 import { UserProps } from "@/types/User";
 import axios from "axios";
 import moment from "moment";
@@ -48,7 +49,10 @@ export const fetchUserRepos = async (
   }
 };
 
-export const searchUser = async (term: string | undefined, sortBy: SortBy) => {
+export const searchUser = async (
+  term: string | undefined,
+  sortBy: SortBy
+): Promise<UserProps> => {
   const res = await axios.get<UserProps>(
     `${API_URL}/search/users?q=${
       term ? `${term}+` : ""
@@ -69,9 +73,9 @@ export const searchUser = async (term: string | undefined, sortBy: SortBy) => {
 
 export const searchRepositories = async (
   term: string | undefined,
-  sortBy: SortBy,
-) => {
-  const res = await axios.get<UserProps[]>(
+  sortBy: SortBy
+): Promise<RepoProps> => {
+  const res = await axios.get<RepoProps>(
     `${API_URL}/search/repositories?q=${term ? `${term}+` : ""}created:>${
       sortBy === "stars" ? lastYear : lastMonthDate
     }`,
@@ -88,5 +92,3 @@ export const searchRepositories = async (
 
   return res.data;
 };
-
-

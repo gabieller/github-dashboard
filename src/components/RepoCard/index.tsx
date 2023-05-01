@@ -10,12 +10,8 @@ import * as S from "./styles";
 
 const colors = ["#03045e", "#0077b6", "#00b4d8", "#caf0f8"];
 
-export const  RepoCard =({
-  name,
-  description,
-  html_url,
-  stargazers_count,
-}: RepoProps) => {
+export const RepoCard = ({ repo }: RepoProps) => {
+  const { name, description, html_url, stargazers_count } = repo;
   return (
     <Link href={html_url} target="_blank">
       <S.Card borderColor={generateRandomBorderColor(colors)}>
@@ -28,4 +24,4 @@ export const  RepoCard =({
       </S.Card>
     </Link>
   );
-}
+};

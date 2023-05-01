@@ -10,6 +10,7 @@ interface TrendingUsersProps {
 }
 
 export const TrendingUsers = ({ popularUsers }: TrendingUsersProps) => {
+  console.log(popularUsers)
   return (
     <div>
        <h3>Trending Users</h3>
