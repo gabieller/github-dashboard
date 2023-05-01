@@ -20,7 +20,6 @@ const User = () => {
 
   const router = useRouter();
   const { username } = router.query;
-  console.log(username);
 
   useEffect(() => {
     const fetchUserData = async () => {

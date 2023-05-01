@@ -2,16 +2,21 @@ import { RepoCard } from "../RepoCard";
 import { RepoProps } from "@/types/Repos";
 
 import * as S from "./styles";
+import { useRouter } from "next/router";
 
 interface TopReposProps {
   popularRepos: RepoProps[];
 }
 
 export const TopRepos = ({ popularRepos }: TopReposProps) => {
+  const router = useRouter();
+  const { q } = router.query;
   return (
     <div>
       <h3>Top Repositories</h3>
-      <S.Grid>
+      {
+         popularRepos?.length > 0 ? (
+          <S.Grid>
         {popularRepos?.map(
           (repo: RepoProps, i) => (
             <RepoCard
@@ -21,6 +26,11 @@ export const TopRepos = ({ popularRepos }: TopReposProps) => {
           )
         )}
       </S.Grid>
+         ) :(
+          <p>{`No repositores were found for the term: ${q}`}</p>
+         )
+      }
+ 
     </div>
   );
 };

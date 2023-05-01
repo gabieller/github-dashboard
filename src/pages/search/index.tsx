@@ -17,13 +17,11 @@ import { TopRepos } from "@/components/TopRepos";
 
 import * as S from "./styles";
 
-//TODO liddar com o erro
 export default function Search() {
   const [popularUsers, setPopularUsers] = useState<UserProps[] | undefined>();
   const [activeUsers, setaActiveUsers] = useState<UserProps[] | undefined>();
   const [popularRepos, setPopulaRepos] = useState<RepoProps[] | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
   const { q } = router.query;
@@ -103,7 +101,6 @@ export default function Search() {
         <Loading />
       ) : (
         <>
-          {/* {error && <p>User not found!</p>} */}
           <S.Container>
             Results for: {q}
             {popularUsers && <TrendingUsers popularUsers={popularUsers} />}
