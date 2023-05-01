@@ -33,7 +33,7 @@ export default function Search() {
       //@ts-ignore
       const decodedUrl = decodeURIComponent(q);
 
-      const data = await searchUser(decodedUrl, "stars");
+      const data = await searchUser(decodedUrl, "followers");
 
       const promises = data.items?.map(async (item: User) => {
         const { login }: User = item;

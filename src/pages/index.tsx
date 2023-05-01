@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const getPopularUsers = async () => {
       setIsLoading(true);
-      const data = await searchUser(undefined, "stars");
+      const data = await searchUser(undefined, "followers");
 
       const promises = data.items?.map(async (item: User) => {
         const { login }: User = item;
