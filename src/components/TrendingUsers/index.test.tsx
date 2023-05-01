@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { TrendingUsers } from ".";
-import { useRouter } from "next/router";
 
 jest.mock("next/router", () => ({
   useRouter: () => ({
