@@ -8,7 +8,7 @@ export const ActiveUsers = ({ activeUsers }) => {
     <div>
       <h3>Most Active Users</h3>
       <S.Grid>
-        {activeUsers?.map((activeUser) => {
+        {activeUsers?.map((activeUser: UserProps) => {
           const { user, repos } = activeUser;
           return <UserCard key={user.id} user={user} repo={repos} />;
         })}

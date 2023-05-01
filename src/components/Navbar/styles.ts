@@ -18,8 +18,9 @@ export const InputWrapper = styled.div`
   svg {
     position: absolute;
     top: 50%;
-    left: 0.5rem;
+    right: 0.5rem;
     transform: translateY(-50%);
+    cursor: pointer;
   }
   input {
     height: 2rem;
@@ -32,4 +33,12 @@ export const InputWrapper = styled.div`
       outline: none;
     }
   }
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+  }
 `;
+

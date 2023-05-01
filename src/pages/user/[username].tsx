@@ -11,7 +11,8 @@ import { AiFillGithub } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 
 import * as S from "./styles";
-import { Loading, RepoCard } from "@/components";
+import { Loading } from "@/components/Loading";
+import { RepoCard } from "@/components/RepoCard";
 
 const User = () => {
   const [userDetails, setUserDetails] = useState<UserProps>();

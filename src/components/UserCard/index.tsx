@@ -1,14 +1,15 @@
-import { UserProps } from "@/types/User";
 
 import { MdStars } from "react-icons/md";
 
-import * as S from "./styles";
 import Image from "next/image";
 import Link from "next/link";
+
+import * as S from "./styles";
 import { limitChars } from "@/utils/limitChars";
+import { UserProps } from "@/types/User";
 
 //@ts-ignore
-export const  UserCard = ({ user, repo }) => {
+export const UserCard = ({ user, repo }: UserProps) => {
   return (
     <Link href={`/user/${user.login}`}>
       <S.Card bgCard={user.avatar_url} data-testid="user-card">
@@ -36,11 +37,13 @@ export const  UserCard = ({ user, repo }) => {
           <S.RepoBox>
             <div>
               <MdStars color="#03045e" />
-              número
+              {repo[0]?.stargazers_count}
             </div>
-            <span>{repo[0]?.name}</span>
-            <span>{repo[0]?.description}</span>
-          </S.RepoBox>
+            <p>{repo[0]?.name}</p>
+            <span>
+              {repo[0]?.description && limitChars(repo[0]?.description, 30)}
+            </span>
+          </S.RepoBox>  
           <S.ButtonProfile>Open Profile</S.ButtonProfile>
         </S.Wrapper>
       </S.Card>

@@ -1,24 +1,23 @@
 import { useState, KeyboardEvent } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
+import logo from "public/logo.svg";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import * as S from "./styles";
-
-import logo from "public/logo.svg";
-import { useRouter } from "next/router";
 
 export function NavBar() {
   const [searchQuery, setSeachQuery] = useState<string>("");
 
   const router = useRouter();
 
-  // const handleKeyDown = (e: KeyboardEvent) => {
-  //   if (e.key === "Enter") {
-  //     setSeachQuery(searchQuery);
-  //   }
-  // };
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <S.NavBar>
@@ -28,18 +27,18 @@ export function NavBar() {
       <S.InputWrapper>
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search..."
           onChange={(e) => setSeachQuery(e.target.value)}
-          // onKeyDown={handleKeyDown}
+          onKeyDown={handleKeyDown}
         />
-        <button>
-          <AiOutlineSearch
-            size={42}
-            onClick={() =>
-              router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
-            }
-          />
-        </button>
+
+        <AiOutlineSearch
+          onClick={() =>
+            router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+          }
+          size={32}
+          color="#2d3a53"
+        />
       </S.InputWrapper>
     </S.NavBar>
   );

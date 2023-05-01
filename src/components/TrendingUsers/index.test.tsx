@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { TrendingUsers } from ".";
-// import TrendingUsers from "@/components/TrendingUsers";
 
 const mockPopularUsers = [
   {

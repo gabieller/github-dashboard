@@ -1,4 +1,5 @@
 import { UserProps } from "@/types/User";
+import { UserResponse } from "@/types/UserResponse";
 import axios from "axios";
 import moment from "moment";
 
@@ -17,7 +18,7 @@ const lastYear = moment().subtract(1, "year").format("YYYY-MM-DD");
 
 export const fetchUser = async (username: string): Promise<UserProps> => {
   try {
-    const res = await axios.get<UserProps>(`${API_URL}/users/${username}`, {
+    const res = await axios.get<UserResponse>(`${API_URL}/users/${username}`, {
       headers,
     });
     return res.data;
@@ -49,7 +50,7 @@ export const fetchUserRepos = async (
 };
 
 export const searchUser = async (term: string | undefined, sortBy: SortBy) => {
-  const res = await axios.get<UserProps[]>(
+  const res = await axios.get<UserResponse>(
     `${API_URL}/search/users?q=${
       term ? `${term}+` : ""
     }created:>${lastMonthDate}`,
@@ -69,7 +70,7 @@ export const searchUser = async (term: string | undefined, sortBy: SortBy) => {
 
 export const searchRepositories = async (
   term: string | undefined,
-  sortBy: SortBy
+  sortBy: SortBy,
 ) => {
   const res = await axios.get<UserProps[]>(
     `${API_URL}/search/repositories?q=${term ? `${term}+` : ""}created:>${
@@ -80,7 +81,7 @@ export const searchRepositories = async (
         sort: sortBy,
         in: `${term ? "name" : ""}`,
         order: "desc",
-        per_page: 3,
+        per_page: 4,
       },
       headers,
     }

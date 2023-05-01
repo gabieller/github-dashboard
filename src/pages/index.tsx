@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { UserProps } from "@/types/User";
 
-
 import {
   fetchUser,
   fetchUserRepos,
@@ -27,6 +26,7 @@ export default function Home() {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
+
     const getPopularUsers = async () => {
       setIsLoading(true);
       const data = await searchUser(undefined, "stars");
@@ -40,9 +40,9 @@ export default function Home() {
       const results = await Promise.all(promises);
 
       setPopularUsers(results);
-
       setIsLoading(false);
     };
+
 
     getPopularUsers();
   }, []);

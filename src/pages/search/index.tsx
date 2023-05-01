@@ -1,49 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   fetchUser,
   fetchUserRepos,
+  searchRepositories,
   searchUser,
 } from "@/services/api";
+
 import { UserProps } from "@/types/User";
 import { RepoProps } from "@/types/Repos";
 
+import { TrendingUsers } from "@/components/TrendingUsers";
+import { ActiveUsers } from "@/components/ActiveUsers";
+import { Loading } from "@/components/Loading";
+import { TopRepos } from "@/components/TopRepos";
 
 import * as S from "./styles";
-import { Loading, TrendingUsers } from "@/components";
+
 
 //TODO liddar com o erro
 export default function Search() {
   const [popularUsers, setPopularUsers] = useState<UserProps[]>();
   const [activeUsers, setaActiveUsers] = useState<UserProps[]>();
-
+  const [popularRepos, setPopulaRepos] = useState<RepoProps[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
   const { q } = router.query;
-
-  // const [searchedUser, setSearcedhUser] = useState<UserProps | null>(null);
-
-  // const [activeUsers, setaActiveUsers] = useState<UserProps[]>([]);
-  // const [popularRepos, setPopulaRepos] = useState<RepoProps[]>([]);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [error, setError] = useState<boolean>(false);
-
-
-
-
-
-  // useEffect(() => {
-  //   const searchTerm = async () => {
-  //     const decodedUrl = decodeURIComponent(q);
-  //     const user = await searchUser(decodedUrl, "stars");
-  //     // const repos = await seachRepoTerm(decodedUrl);
-  //   };
-
-  //   if (q) {
-  //     searchTerm();
-  //   }
-  // }, [q]);
 
   useEffect(() => {
     const getPopularUsers = async () => {
@@ -51,10 +35,10 @@ export default function Search() {
       const decodedUrl = decodeURIComponent(q);
       const data = await searchUser(decodedUrl, "stars");
 
-      const promises = data.items.map(async ({ login }: UserProps) => {
-        const user = await fetchUser(login);
-        const repos = await fetchUserRepos(login, 1);
-        return { user, repos };
+      const promises = data.items.map(async (user: UserProps) => {
+        const fetchedUser = await fetchUser(user.login);
+        const fetchedRepos = await fetchUserRepos(user.login, 1);
+        return { fetchedUser, fetchedRepos };
       });
 
       const results = await Promise.all(promises);
@@ -89,27 +73,27 @@ export default function Search() {
     getActiveUsers();
   }, [q]);
 
-  //   useEffect(() => {
-  //   setIsLoading(true);
+  useEffect(() => {
+    setIsLoading(true);
 
-  //   const getPopularRepos = async () => {
-  //     const res = await fetchRepositories();
+    const getPopularRepos = async () => {
+      const res = await searchRepositories(undefined, "stars");
 
-  //     const popularRepos = res.items.map(
-  //       ({ id, name, description, html_url, stargazers_count }: RepoProps) => ({
-  //         id,
-  //         name,
-  //         description,
-  //         html_url,
-  //         stargazers_count,
-  //       })
-  //     );
-  //     setPopulaRepos(popularRepos);
-  //     setIsLoading(false);
-  //   };
+      const popularRepos = res.items.map(
+        ({ id, name, description, html_url, stargazers_count }: RepoProps) => ({
+          id,
+          name,
+          description,
+          html_url,
+          stargazers_count,
+        })
+      );
+      setPopulaRepos(popularRepos);
+      setIsLoading(false);
+    };
 
-  //   getPopularRepos();
-  // }, []);
+    getPopularRepos();
+  }, [q]);
 
   return (
     <div>
@@ -117,12 +101,12 @@ export default function Search() {
         <Loading />
       ) : (
         <>
-          {/* {searchedUser && <UserCard {...searchedUser} />} */}
           {/* {error && <p>User not found!</p>} */}
           <S.Container>
+            Results for: {q}
             {popularUsers && <TrendingUsers popularUsers={popularUsers} />}
             {activeUsers && <ActiveUsers activeUsers={activeUsers} />}
-            {/* {popularRepos && <TopRepos popularRepos={popularRepos} />} */}
+            {popularRepos && <TopRepos popularRepos={popularRepos} />}
           </S.Container>
         </>
       )}

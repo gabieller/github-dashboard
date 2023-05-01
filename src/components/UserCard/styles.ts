@@ -38,7 +38,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  border-radius: 0 0 .5rem .5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
   background-color: #fff;
   height: 80%;
   width: 100%;
@@ -83,12 +83,25 @@ export const RepoBox = styled.div`
   border-width: 1px 1px 1px 8px;
   border-color: #346beb;
   border-radius: 0.5rem;
+  gap: .5rem;
+  padding: .5rem;
+  font-size: .75rem;
 
   div {
     display: flex;
+    align-items: center;
+    gap: .25rem;
     position: absolute;
     right: 5%;
   }
+
+  p {
+    font-weight: 500;
+    color: #0077b6;
+    word-break: break-word;
+  }
+
+
 
   ${Wrapper}:hover & {
     display: none;
