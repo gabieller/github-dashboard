@@ -33,67 +33,72 @@ export default function Search() {
       //@ts-ignore
       const decodedUrl = decodeURIComponent(q);
 
-      const data = await searchUser(decodedUrl, "followers");
+      if (router.isReady) {
+        const data = await searchUser(decodedUrl, "followers");
 
-      const promises = data.items?.map(async (item: User) => {
-        const { login }: User = item;
-        const user = await fetchUser(login);
-        const repos = await fetchUserRepos(login, 1);
-        return { user, repos };
-      });
+        const promises = data.items?.map(async (item: User) => {
+          const { login }: User = item;
+          const user = await fetchUser(login);
+          const repos = await fetchUserRepos(login, 1);
+          return { user, repos };
+        });
 
-      //@ts-ignore
-      const results = await Promise.all(promises);
-
-      setPopularUsers(results as UserProps[]);
-      setIsLoading(false);
+        //@ts-ignore
+        const results = await Promise.all(promises);
+        setPopularUsers(results as UserProps[]);
+        setIsLoading(false);
+      }
     };
 
     getPopularUsers();
-  }, [q]);
+  }, [q, router.isReady]);
 
   useEffect(() => {
     const getActiveUsers = async () => {
       setIsLoading(true);
 
-      //@ts-ignore
-      const decodedUrl = decodeURIComponent(q);
+      if (router.isReady) {
+        //@ts-ignore
+        const decodedUrl = decodeURIComponent(q);
 
-      const data = await searchUser(decodedUrl, "repositories");
+        const data = await searchUser(decodedUrl, "repositories");
 
-      const promises = data.items?.map(async (item: User) => {
-        const { login }: User = item;
-        const user = await fetchUser(login);
-        const repos = await fetchUserRepos(login, 1);
-        return { user, repos };
-      });
+        const promises = data.items?.map(async (item: User) => {
+          const { login }: User = item;
+          const user = await fetchUser(login);
+          const repos = await fetchUserRepos(login, 1);
+          return { user, repos };
+        });
 
-      //@ts-ignore
-      const results = await Promise.all(promises);
+        //@ts-ignore
+        const results = await Promise.all(promises);
 
-      setaActiveUsers(results as UserProps[]);
-      setIsLoading(false);
+        setaActiveUsers(results as UserProps[]);
+        setIsLoading(false);
+      }
     };
 
     getActiveUsers();
-  }, [q]);
+  }, [q, router.isReady]);
 
   useEffect(() => {
-    setIsLoading(true);
-
     const getPopularRepos = async () => {
-      //@ts-ignore
-      const decodedUrl = decodeURIComponent(q);
+      setIsLoading(true);
 
-      const res = await searchRepositories(decodedUrl, "stars");
-      const popularRepos = res.items;
+      if (router.isReady) {
+        //@ts-ignore
+        const decodedUrl = decodeURIComponent(q);
 
-      setPopulaRepos(popularRepos as RepoProps[]);
-      setIsLoading(false);
+        const res = await searchRepositories(decodedUrl, "stars");
+        const popularRepos = res.items;
+
+        setPopulaRepos(popularRepos as RepoProps[]);
+        setIsLoading(false);
+      }
     };
 
     getPopularRepos();
-  }, [q]);
+  }, [q, router.isReady]);
 
   return (
     <div>
